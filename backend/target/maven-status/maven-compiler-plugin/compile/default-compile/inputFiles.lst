@@ -1,6 +1,9 @@
+/Users/michaelreape/Developer/NoteBook/backend/src/main/java/com/example/NoteBook/Controller/AppUserController.java
 /Users/michaelreape/Developer/NoteBook/backend/src/main/java/com/example/NoteBook/DTO/AppUserCreateDTO.java
 /Users/michaelreape/Developer/NoteBook/backend/src/main/java/com/example/NoteBook/DTO/AppUserViewDTO.java
+/Users/michaelreape/Developer/NoteBook/backend/src/main/java/com/example/NoteBook/DTO/LoginRequestDTO.java
 /Users/michaelreape/Developer/NoteBook/backend/src/main/java/com/example/NoteBook/Entity/AppUser.java
 /Users/michaelreape/Developer/NoteBook/backend/src/main/java/com/example/NoteBook/NoteBookApplication.java
 /Users/michaelreape/Developer/NoteBook/backend/src/main/java/com/example/NoteBook/Repository/AppUserRepository.java
 /Users/michaelreape/Developer/NoteBook/backend/src/main/java/com/example/NoteBook/Service/AppUserService.java
+/Users/michaelreape/Developer/NoteBook/backend/src/main/java/com/example/NoteBook/Service/AuthService.java

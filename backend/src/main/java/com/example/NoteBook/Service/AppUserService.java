@@ -25,7 +25,7 @@ public class AppUserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // // save the user
+    // save the user
     public AppUserViewDTO saveUser(AppUserCreateDTO dto) {
         if (appUserRepository.existsByEmail(dto.getEmail())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");

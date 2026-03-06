@@ -1,6 +1,9 @@
+com/example/NoteBook/DTO/LoginRequestDTO.class
 com/example/NoteBook/Repository/AppUserRepository.class
 com/example/NoteBook/DTO/AppUserViewDTO.class
 com/example/NoteBook/DTO/AppUserCreateDTO.class
 com/example/NoteBook/NoteBookApplication.class
+com/example/NoteBook/Controller/AppUserController.class
+com/example/NoteBook/Service/AuthService.class
 com/example/NoteBook/Service/AppUserService.class
 com/example/NoteBook/Entity/AppUser.class

@@ -9,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "users")
 public class AppUser {
@@ -23,11 +25,13 @@ public class AppUser {
     private String name;
     private String email;
     private String passwordHash;
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public AppUser(String email, String passwordHash) {
+    public AppUser(String email,String name, String passwordHash) {
         this.email = email;
+        this.name = name;
         this.passwordHash = passwordHash;
     }
 

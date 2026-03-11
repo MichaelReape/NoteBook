@@ -30,7 +30,7 @@ public class AppUserService {
         if (appUserRepository.existsByEmail(dto.getEmail())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
         }
-        AppUser newUser = new AppUser(dto.getEmail(),
+        AppUser newUser = new AppUser(dto.getEmail(),dto.getName(),
                 passwordEncoder.encode(dto.getPassword()));
         AppUser savedUser = appUserRepository.save(newUser);
         return convertToViewDTO(savedUser);

@@ -27,70 +27,70 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/users")
 public class AppUserController {
-    // api access
-    private final AppUserService appUserService;
-    private final AuthService authService;
+  // api access
+  private final AppUserService appUserService;
+  private final AuthService authService;
 
-    // constructor injection
-    public AppUserController(AppUserService appUserService, AuthService authService) {
-        this.appUserService = appUserService;
-        this.authService = authService;
+  // constructor injection
+  public AppUserController(AppUserService appUserService, AuthService authService) {
+    this.appUserService = appUserService;
+    this.authService = authService;
+  }
+
+  // // save user
+  @PostMapping
+  public AppUserViewDTO createUser(@Valid @RequestBody AppUserCreateDTO dto,
+      HttpServletResponse response,
+      HttpServletRequest request) {
+    AppUserViewDTO newUser = appUserService.saveUser(dto);
+    // Automatically log in the user after registration
+    authService.establishSession(newUser.getEmail(), request, response);
+    return newUser;
+  }
+
+  // login user
+  @PostMapping("/login")
+  public ResponseEntity<AppUserViewDTO> loginUser(@Valid @RequestBody LoginRequestDTO loginRequest,
+      HttpServletResponse response, HttpServletRequest request) {
+    // Authenticate the user
+    AppUserViewDTO dto = appUserService.authenticateUser(loginRequest);
+    // Create an authentication token and establish session
+    authService.establishSession(dto.getEmail(), request, response);
+    return ResponseEntity.ok(dto);
+  }
+
+  // get user by id
+  // i want this to check if there is a valid session first
+  @GetMapping("/{id}")
+  public ResponseEntity<AppUserViewDTO> getUserById(@PathVariable long id,
+      Authentication auth) {
+    if (auth == null) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+    return ResponseEntity.ok(appUserService.getUserById(id));
+  }
 
-    // // save user
-    @PostMapping
-    public AppUserViewDTO createUser(@Valid @RequestBody AppUserCreateDTO dto,
-            HttpServletResponse response,
-            HttpServletRequest request) {
-        AppUserViewDTO newUser = appUserService.saveUser(dto);
-        // Automatically log in the user after registration
-        authService.establishSession(newUser.getEmail(), request, response);
-        return newUser;
-    }
+  // get all users
+  @GetMapping
+  public List<AppUserViewDTO> getUsers() {
+    return appUserService.getAllUsers();
+  }
 
-    // login user
-    @PostMapping("/login")
-    public ResponseEntity<AppUserViewDTO> loginUser(@Valid @RequestBody LoginRequestDTO loginRequest,
-            HttpServletResponse response, HttpServletRequest request) {
-        // Authenticate the user
-        AppUserViewDTO dto = appUserService.authenticateUser(loginRequest);
-        // Create an authentication token and establish session
-        authService.establishSession(dto.getEmail(), request, response);
-        return ResponseEntity.ok(dto);
-    }
+  // delete user by id
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT) // 204 if successful
+  public void deleteById(@PathVariable long id) {
+    appUserService.deleteUser(id);
+  }
 
-    // get user by id
-    // i want this to check if there is a valid session first
-    @GetMapping("/{id}")
-    public ResponseEntity<AppUserViewDTO> getUserById(@PathVariable long id,
-            Authentication auth) {
-        if (auth == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        return ResponseEntity.ok(appUserService.getUserById(id));
-    }
-
-    // get all users
-    @GetMapping
-    public List<AppUserViewDTO> getUsers() {
-        return appUserService.getAllUsers();
-    }
-
-    // delete user by id
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT) // 204 if successful
-    public void deleteById(@PathVariable long id) {
-        appUserService.deleteUser(id);
-    }
-
-    // // delete later just for testing
-    // @GetMapping("/me")
-    // public ResponseEntity<UserViewDTO> currentUser(Authentication auth) {
-    // // this should return the user based on the session
-    // if (auth == null) {
-    // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    // }
-    // return ResponseEntity.ok(userService.getUserByEmail(auth.getName()));
-    // }
+  // // delete later just for testing
+  // @GetMapping("/me")
+  // public ResponseEntity<UserViewDTO> currentUser(Authentication auth) {
+  // // this should return the user based on the session
+  // if (auth == null) {
+  // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+  // }
+  // return ResponseEntity.ok(userService.getUserByEmail(auth.getName()));
+  // }
 
 }

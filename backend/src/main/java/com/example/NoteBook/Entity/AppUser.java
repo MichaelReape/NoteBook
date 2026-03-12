@@ -15,62 +15,62 @@ import org.hibernate.annotations.CreationTimestamp;
 @Table(name = "users")
 public class AppUser {
 
-    public AppUser() {
-    }
+  public AppUser() {
+  }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    private String name;
-    private String email;
-    private String passwordHash;
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+  private String name;
+  private String email;
+  private String passwordHash;
+  @CreationTimestamp
+  @Column(name = "created_at")
+  private LocalDateTime createdAt;
 
-    public AppUser(String email,String name, String passwordHash) {
-        this.email = email;
-        this.name = name;
-        this.passwordHash = passwordHash;
-    }
+  public AppUser(String email, String name, String passwordHash) {
+    this.email = email;
+    this.name = name;
+    this.passwordHash = passwordHash;
+  }
 
-    // Getters
-    public long getId() {
-        return id;
-    }
+  // Getters
+  public long getId() {
+    return id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    // maybe make protected later
-    public String getPasswordHash() {
-        return passwordHash;
-    }
+  // maybe make protected later
+  public String getPasswordHash() {
+    return passwordHash;
+  }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
 
-    // Setters
-    public void setName(String name) {
-        this.name = name;
-    }
+  // Setters
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
+  public void setPasswordHash(String passwordHash) {
+    this.passwordHash = passwordHash;
+  }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
 }

@@ -56,6 +56,7 @@ public class AppUserController {
     AppUserViewDTO dto = appUserService.authenticateUser(loginRequest);
     // Create an authentication token and establish session
     authService.establishSession(dto.getEmail(), request, response);
+    System.out.println("good job Michael, I am logged in ");
     return ResponseEntity.ok(dto);
   }
 
@@ -65,6 +66,7 @@ public class AppUserController {
   public ResponseEntity<AppUserViewDTO> getUserById(@PathVariable long id,
       Authentication auth) {
     if (auth == null) {
+      System.out.print("getting user in controller, auth is null");
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
     return ResponseEntity.ok(appUserService.getUserById(id));

@@ -1,10 +1,16 @@
 /home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/Config/SecurityConfig.java
 /home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/Controller/AppUserController.java
+/home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/Controller/NoteController.java
 /home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/DTO/AppUserCreateDTO.java
 /home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/DTO/AppUserViewDTO.java
+/home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/DTO/CreateNoteDTO.java
 /home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/DTO/LoginRequestDTO.java
+/home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/DTO/NoteResponseDTO.java
 /home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/Entity/AppUser.java
+/home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/Entity/Note.java
 /home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/NoteBookApplication.java
 /home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/Repository/AppUserRepository.java
+/home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/Repository/NoteRepository.java
 /home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/Service/AppUserService.java
 /home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/Service/AuthService.java
+/home/michael/Dev/NoteBook/backend/src/main/java/com/example/NoteBook/Service/NoteService.java

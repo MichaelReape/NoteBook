@@ -10,17 +10,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()) // allow POSTs from curl/JS without CSRF token
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/login", "/api/users").permitAll()
-                        .anyRequest().permitAll());
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf(csrf -> csrf.disable()) // allow POSTs from curl/JS without CSRF token
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/login", "/api/users", "/api/notes").permitAll()
+            .anyRequest().permitAll());
+    return http.build();
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }

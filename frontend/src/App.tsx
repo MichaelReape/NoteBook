@@ -4,6 +4,7 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
 import type { NoteDTO } from './types/note'
+import Tiptap from './components/Tiptap.tsx'
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -67,15 +68,30 @@ function App() {
       });
       return;
     } catch (error) { console.log(error); }
+    const saveNote = async () => {
+      try {
+        console.log("Saving notes");
 
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
   return (
     <div>
+      {/* //input box for email address */}
       <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
+      {/* //input box for password */}
       <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='password' />
+      {/* //login button */}
       <button onClick={handleLogin}>Login</button>
 
       <button onClick={getAllNotes}>Notes</button>
+      <div className='card'>
+        <Tiptap userId={userId} />
+      </div>
+
+
     </div>
   );
 }

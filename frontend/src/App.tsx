@@ -1,15 +1,16 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
 import type { NoteDTO } from './types/note'
 import Tiptap from './components/Tiptap.tsx'
+import Modal from './components/Modal.tsx'
+import RegisterForm from './components/RegisterForm.tsx'
+
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userId, setUserId] = useState("");
   const [notes, setNotes] = useState<NoteDTO[]>([]);
+  const [isCreateAccountOpen, setIsCreateAccountOpen] = useState(false);
 
   const handleLogin = async () => {
     //send the username and password to the backend
@@ -41,6 +42,9 @@ function App() {
     }
   };
 
+  const toggleCreateAccountModal = () => {
+    setIsCreateAccountOpen(!isCreateAccountOpen);
+  };
   const getAllNotes = async () => {
     try {
       console.log("Getting all notes");
@@ -68,14 +72,6 @@ function App() {
       });
       return;
     } catch (error) { console.log(error); }
-    const saveNote = async () => {
-      try {
-        console.log("Saving notes");
-
-      } catch (error) {
-        console.log(error);
-      }
-    }
   }
   return (
     <div>
@@ -86,7 +82,13 @@ function App() {
       {/* //login button */}
       <button onClick={handleLogin}>Login</button>
 
+      <button onClick={toggleCreateAccountModal}>Create Account</button>
       <button onClick={getAllNotes}>Notes</button>
+
+      {isCreateAccountOpen && <Modal onClose={() => setIsCreateAccountOpen(false)} >
+        <RegisterForm />
+      </Modal>
+      }
       <div className='card'>
         <Tiptap userId={userId} />
       </div>

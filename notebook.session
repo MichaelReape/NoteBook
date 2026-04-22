@@ -1,0 +1,25 @@
+
+# Set base directory for all following commands
+cd ~/Dev/Notebook
+
+# Tab 1: Postgres
+new_tab postgres
+launch docker-compose up
+
+# Tab 2: Spring Boot
+new_tab spring
+cd ~/Dev/Notebook/backend
+launch mvn spring-boot:run
+
+# Tab 3: Vite
+new_tab vite
+cd ~/Dev/Notebook/frontend
+launch npm run dev
+
+# Tab 4: Neovim
+new_tab nvim
+launch nvim
+
+# Tab 5: Spare terminal
+new_tab terminal
+launch zsh

@@ -37,15 +37,15 @@ public class AppUserController {
     this.authService = authService;
   }
 
-  // // save user
+  // // register user
   @PostMapping
-  public AppUserViewDTO createUser(@Valid @RequestBody AppUserCreateDTO dto,
+  public ResponseEntity<AppUserViewDTO> createUser(@Valid @RequestBody AppUserCreateDTO dto,
       HttpServletResponse response,
       HttpServletRequest request) {
     AppUserViewDTO newUser = appUserService.saveUser(dto);
     // Automatically log in the user after registration
     authService.establishSession(newUser.getEmail(), request, response);
-    return newUser;
+    return ResponseEntity.ok(newUser);
   }
 
   // login user

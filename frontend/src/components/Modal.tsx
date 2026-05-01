@@ -1,5 +1,10 @@
-// import { useState } from "react";
-const Modal = ({ onClose, children }: { onClose: () => void, children: React.ReactNode }) => {
+const Modal = ({
+  onClose,
+  children,
+}: {
+  onClose: () => void;
+  children: React.ReactNode;
+}) => {
   return (
     <div>
       <button onClick={onClose}>X</button>

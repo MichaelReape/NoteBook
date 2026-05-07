@@ -56,8 +56,15 @@ public class AppUserController {
     AppUserViewDTO dto = appUserService.authenticateUser(loginRequest);
     // Create an authentication token and establish session
     authService.establishSession(dto.getEmail(), request, response);
-    System.out.println("good job Michael, I am logged in ");
     return ResponseEntity.ok(dto);
+  }
+
+  // logout user
+  @PostMapping("/logout")
+  public ResponseEntity<Void> logoutUser(HttpServletResponse response, HttpServletRequest request) {
+    authService.closeSession(request, response);
+    System.out.print("User logged out");
+    return ResponseEntity.ok().build();
   }
 
   // get user by id

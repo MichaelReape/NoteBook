@@ -21,15 +21,28 @@ function App() {
     setIsLoginOpen(!isLoginOpen);
     setIsCreateAccountOpen(false);
   };
-  const logout = () => {
-    setUserId("");
-    setNotes([]);
-    setEmail("");
-    //need to put logout logic here or maybe in a component? not sure
+  const logout = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/users/logout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to logout user");
+      }
+      console.log(userId, " logged out");
+      setUserId("");
+      setNotes([]);
+      setEmail("");
+    } catch (error) {
+      console.log(error);
+    }
   };
   const getAllNotes = async () => {
     try {
       console.log("Getting all notes for ", email);
+      // need to change this in the backend so that the userId is pulled from the session instead of being passed in the request body, for security reasons
       const response = await fetch(
         `http://localhost:8080/api/notes/user/${userId}`,
         {

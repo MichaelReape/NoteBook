@@ -21,7 +21,7 @@ const Tiptap = ({ userId }: { userId: String }) => {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          userId: userId,
+          // userId: userId,
           note: content,
         }),
       });

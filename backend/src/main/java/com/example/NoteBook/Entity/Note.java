@@ -2,14 +2,15 @@ package com.example.NoteBook.Entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-
-import org.hibernate.annotations.CreationTimestamp;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "notes")
@@ -21,6 +22,7 @@ public class Note {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long noteId;
+  @NotNull
   private Long userId;
   private String book;
   private String chapter;

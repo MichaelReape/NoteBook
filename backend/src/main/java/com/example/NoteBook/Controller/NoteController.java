@@ -31,10 +31,7 @@ public class NoteController {
   // save the note
   @PostMapping
   public NoteResponseDTO createNote(@Valid @RequestBody CreateNoteDTO createNoteDTO) {
-    System.out.println("I am working in the post endpoint");
     return noteService.saveNote(createNoteDTO);
-    // maybe we should have a response entity here?
-    // or just something to confirm it?
   }
 
   @GetMapping("/user/{userId}")

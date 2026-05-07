@@ -3,25 +3,37 @@ package com.example.NoteBook.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.NoteBook.DTO.CreateNoteDTO;
 import com.example.NoteBook.DTO.NoteResponseDTO;
+import com.example.NoteBook.Entity.AppUser;
 import com.example.NoteBook.Entity.Note;
+import com.example.NoteBook.Repository.AppUserRepository;
 import com.example.NoteBook.Repository.NoteRepository;
 
 @Service
 public class NoteService {
   private final NoteRepository noteRepository;
+  private final AppUserRepository appUserRepository;
 
-  public NoteService(NoteRepository noteRepository) {
+  public NoteService(NoteRepository noteRepository, AppUserRepository appUserRepository) {
     this.noteRepository = noteRepository;
+    this.appUserRepository = appUserRepository;
   }
 
   public NoteResponseDTO saveNote(CreateNoteDTO createNoteDTO) {
-    Note note = new Note(createNoteDTO.getUserId(), createNoteDTO.getBook(), createNoteDTO.getChapter(),
+    // Get the currently authenticated user's email from the security context
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    // Find the user ID based on the email to save the note to the correct user
+    AppUser appUser = appUserRepository.findByEmail(email)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+    // Create a new note entity and save it to the database with the userid from the
+    // session
+    Note note = new Note(appUser.getId(), createNoteDTO.getBook(), createNoteDTO.getChapter(),
         createNoteDTO.getNote());
-    System.out.println("i am working in the service");
     return convertToNoteResponseDTO(noteRepository.save(note));
   }
 
@@ -37,7 +49,8 @@ public class NoteService {
 
   public NoteResponseDTO findNote(Long noteId) {
     System.out.println("I am in the findNote service");
-    Note note = noteRepository.findById(noteId).orElseThrow();
+    Note note = noteRepository.findById(noteId).orElseThrow(
+        () -> new RuntimeException("Note not found"));
     return convertToNoteResponseDTO(note);
   }
 

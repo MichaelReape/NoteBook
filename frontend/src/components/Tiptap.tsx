@@ -5,7 +5,13 @@ import StarterKit from "@tiptap/starter-kit";
 import type { NoteDTO } from "../types/note.ts";
 import { useState } from "react";
 
-const Tiptap = ({ userId }: { userId: String }) => {
+const Tiptap = ({
+  userId,
+  loadedNote,
+}: {
+  userId: String;
+  loadedNote: NoteDTO | null;
+}) => {
   const editor = useEditor({
     extensions: [StarterKit], // define your extension array
     content: "<p>Enter your note here</p>", // initial content
@@ -21,7 +27,6 @@ const Tiptap = ({ userId }: { userId: String }) => {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          // userId: userId,
           note: content,
         }),
       });
@@ -32,13 +37,20 @@ const Tiptap = ({ userId }: { userId: String }) => {
       console.log(error);
     }
   };
-
+  const loadNote = () => {
+    if (loadedNote?.note) {
+      editor.commands.setContent(loadedNote.note);
+    }
+    console.log("note loaded");
+  };
   return (
     <>
       <EditorContent editor={editor} />
       <FloatingMenu editor={editor}></FloatingMenu>
+      {/* add bubble menu for formatting options like bold, italic */}
       <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
       <button onClick={saveNote}>Save Note</button>
+      <button onClick={loadNote}> Load Note</button>
     </>
   );
 };

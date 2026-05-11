@@ -5,6 +5,7 @@ import Tiptap from "./components/Tiptap.tsx";
 import Modal from "./components/Modal.tsx";
 import RegisterForm from "./components/RegisterForm.tsx";
 import LoginForm from "./components/LoginForm.tsx";
+import NotesList from "./components/NotesList.tsx";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ function App() {
   const [notes, setNotes] = useState<NoteDTO[]>([]);
   const [isCreateAccountOpen, setIsCreateAccountOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [selectedNote, setSelectedNote] = useState<NoteDTO | null>(null);
 
   const toggleCreateAccountModal = () => {
     setIsCreateAccountOpen(!isCreateAccountOpen);
@@ -39,12 +41,12 @@ function App() {
       console.log(error);
     }
   };
-  const getAllNotes = async () => {
+  const getAllNotes = async (id: string) => {
     try {
-      console.log("Getting all notes for ", email);
+      // console.log("Getting all notes for ", email);
       // need to change this in the backend so that the userId is pulled from the session instead of being passed in the request body, for security reasons
       const response = await fetch(
-        `http://localhost:8080/api/notes/user/${userId}`,
+        `http://localhost:8080/api/notes/user/${id}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -92,6 +94,7 @@ function App() {
           <LoginForm
             onLoginSuccess={(id, email) => {
               setUserId(id);
+              getAllNotes(id);
               setEmail(email);
               setIsLoginOpen(false);
             }}
@@ -101,9 +104,16 @@ function App() {
       {email && <p>Welcome, {email}!</p>}
       {userId && <button onClick={logout}>Logout</button>}
 
-      {userId && <button onClick={getAllNotes}>Notes</button>}
+      <NotesList
+        notes={notes}
+        onOpen={(note) => {
+          setSelectedNote(note);
+        }}
+      />
+      {/* {userId && <button onClick={getAllNotes(userId)}>Notes</button>} */}
       <div className="card">
-        <Tiptap userId={userId} />
+        {/* here need to add logic that if the note is set to something and load note pressed then set content to it */}
+        <Tiptap userId={userId} loadedNote={selectedNote} />
       </div>
     </div>
   );

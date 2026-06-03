@@ -6,10 +6,10 @@ import type { NoteDTO } from "../types/note.ts";
 import { useState } from "react";
 
 const Tiptap = ({
-  userId,
+  // userId,
   loadedNote,
 }: {
-  userId: String;
+  // userId: String;
   loadedNote: NoteDTO | null;
 }) => {
   const editor = useEditor({

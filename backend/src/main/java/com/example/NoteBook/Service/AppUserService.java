@@ -63,7 +63,7 @@ public class AppUserService {
     appUserRepository.deleteById(id);
   }
 
-  // Authenticate user
+  // Authenticate user login
   public AppUserViewDTO authenticateUser(LoginRequestDTO requestDTO) {
 
     AppUser appUser = appUserRepository.findByEmail(requestDTO.getEmail())
@@ -78,6 +78,6 @@ public class AppUserService {
 
   // convert to view DTO
   private AppUserViewDTO convertToViewDTO(AppUser appUser) {
-    return new AppUserViewDTO(appUser.getId(), appUser.getEmail(), appUser.getName(), appUser.getCreatedAt());
+    return new AppUserViewDTO(appUser.getEmail(), appUser.getName(), appUser.getCreatedAt());
   }
 }

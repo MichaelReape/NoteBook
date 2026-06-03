@@ -2,6 +2,7 @@ package com.example.NoteBook.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class NoteService {
 
   public NoteResponseDTO saveNote(CreateNoteDTO createNoteDTO) {
     // Get the currently authenticated user's email from the security context
+    // we use the email when establishing the sessiion in the auth service
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
     // Find the user ID based on the email to save the note to the correct user
@@ -37,8 +39,13 @@ public class NoteService {
     return convertToNoteResponseDTO(noteRepository.save(note));
   }
 
-  public List<NoteResponseDTO> findNotes(Long userId) {
-    System.out.println("I am in the searchNotes service");
+  /**
+   * Finds all notes user has
+   * 
+   * @return List of notes the user has, each note in a DTO
+   */
+  public List<NoteResponseDTO> findNotes() {
+    Long userId = getUserIdFromSession();
     List<Note> notes = noteRepository.findByUserId(userId);
     List<NoteResponseDTO> notesDTO = new ArrayList<>();
     for (Note n : notes) {
@@ -47,20 +54,65 @@ public class NoteService {
     return notesDTO;
   }
 
+  /**
+   * Finds a note by its unique ID
+   * 
+   * @param noteId ID of the note to find
+   * @return note as a DTO
+   * @throws RuntimeException if the note does not belong to the current context
+   *                          holder
+   */
   public NoteResponseDTO findNote(Long noteId) {
-    System.out.println("I am in the findNote service");
-    Note note = noteRepository.findById(noteId).orElseThrow(
-        () -> new RuntimeException("Note not found"));
-    return convertToNoteResponseDTO(note);
+    Note note = findNoteByNoteId(noteId);
+    if (checkOwnership(note)) {
+      return convertToNoteResponseDTO(note);
+    } else {
+      throw new RuntimeException("Note does not belong to user");
+    }
   }
 
+  /**
+   * Deletes a note specified by its unique ID
+   * 
+   * @param noteId ID of the note to delete
+   * @throws RuntimeException if the note does not belong to the current context
+   *                          holder
+   */
   public void deleteNote(Long noteId) {
-    System.out.println("I am working in the deleteNote Service");
-    noteRepository.deleteById(noteId);
+    if (checkOwnership(findNoteByNoteId(noteId))) {
+      noteRepository.deleteById(noteId);
+    } else {
+      throw new RuntimeException("Note does not belong to user");
+    }
   }
 
+  // helper method to convert note to a DTO
   private NoteResponseDTO convertToNoteResponseDTO(Note note) {
     return new NoteResponseDTO(note.getNoteId(), note.getBook(), note.getChapter(), note.getNotes(),
         note.getCreatedAt());
   }
-}
+
+  // helper method to get the userId from the session
+  private Long getUserIdFromSession() {
+    // Get the currently authenticated user's email from the security context
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    // Find the user ID based on the email
+    AppUser appUser = appUserRepository.findByEmail(email)
+        .orElseThrow(() -> new RuntimeException("User not found in database"));
+    return appUser.getId();
+  }
+
+  // helper method to confirm the note belongs to the authenticated user
+  private boolean checkOwnership(Note note) {
+    // Get the userId associated with the note
+    Long userId = note.getUserId();
+    // Grabs the current authenticated user's email from the context
+    return Objects.equals(userId, getUserIdFromSession());
+  }
+
+  // helper method to find a note by the noteId key
+  private Note findNoteByNoteId(Long noteId) {
+    return noteRepository.findById(noteId).orElseThrow(
+        () -> new RuntimeException("Note not found"));
+  }
+}// End of NoteService

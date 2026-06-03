@@ -10,17 +10,13 @@ public class CreateNoteDTO {
 
   }
 
-  public CreateNoteDTO(Long userId, String book, String chapter, String note) {
-    this.userId = userId;
+  public CreateNoteDTO(String book, String chapter, String note) {
     this.book = book;
     this.chapter = chapter;
     this.note = note;
   }
 
-  public Long getUserId() {
-    return this.userId;
-  }
-
+  // getters
   public String getBook() {
     return this.book;
   }
@@ -33,6 +29,7 @@ public class CreateNoteDTO {
     return this.note;
   }
 
+  // setters
   public void setBook(String book) {
     this.book = book;
   }

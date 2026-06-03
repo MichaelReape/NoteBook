@@ -21,6 +21,7 @@ public class NoteResponseDTO {
     this.createdAt = createdAt;
   }
 
+  // getters
   public Long getNoteId() {
     return this.noteId;
   }

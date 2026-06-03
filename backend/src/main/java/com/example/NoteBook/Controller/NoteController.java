@@ -24,25 +24,38 @@ import jakarta.validation.Valid;
 public class NoteController {
   private final NoteService noteService;
 
+  // constructor injection
   public NoteController(NoteService noteService) {
     this.noteService = noteService;
   }
 
-  // save the note
+  /**
+   * Saves a note to the database for the currently authenticated user. The userId
+   * is pulled from the session and associated with the note when it is saved.
+   * 
+   * @param createNoteDTO DTO containing the book, chapter, and note content to be
+   *                      saved
+   * @return The saved note in a safe DTO format without sensitive information
+   *         like userId
+   */
   @PostMapping
   public NoteResponseDTO createNote(@Valid @RequestBody CreateNoteDTO createNoteDTO) {
     return noteService.saveNote(createNoteDTO);
   }
 
-  @GetMapping("/user/{userId}")
-  public ResponseEntity<List<NoteResponseDTO>> findNotes(@PathVariable Long userId, Authentication auth) {
-    System.out.print("getting notes by the userId in Controller");
-    if (auth == null) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
-    return ResponseEntity.ok(noteService.findNotes(userId));
+  /**
+   * Finds all notes user has
+   *
+   * @return List of notes the user has, each note in a DTO
+   */
+  @GetMapping("/allNotes")
+  public ResponseEntity<List<NoteResponseDTO>> findNotes() {
+    System.out.println("getting all notes for user in Controller");
+    return ResponseEntity.ok(noteService.findNotes());
   }
 
+  // gets a note by the noteId key, primary key in note database table
+  // returns noteResponseDTO => book, chapter, note, noteId, createdAt
   @GetMapping("/{noteId}")
   public ResponseEntity<NoteResponseDTO> findNote(@PathVariable Long noteId, Authentication auth) {
     System.out.println("getting note by noteId in Controller");
@@ -52,9 +65,9 @@ public class NoteController {
     return ResponseEntity.ok(noteService.findNote(noteId));
   }
 
+  // deletes a note by the noteId key
   @DeleteMapping("/{noteId}")
   public ResponseEntity<Void> deleteNote(@PathVariable Long noteId) {
-    System.out.println("I am working in the delete endpoint");
     noteService.deleteNote(noteId);
     return ResponseEntity.noContent().build();
   }

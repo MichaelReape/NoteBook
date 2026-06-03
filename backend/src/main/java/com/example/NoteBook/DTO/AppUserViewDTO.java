@@ -12,18 +12,13 @@ public class AppUserViewDTO {
 
     }
 
-    public AppUserViewDTO(long id, String email, String name, LocalDateTime createdAt) {
-        this.id = id;
+    public AppUserViewDTO(String email, String name, LocalDateTime createdAt) {
         this.email = email;
         this.name = name;
         this.createdAt = createdAt;
     }
 
     // getters
-    public long getId() {
-        return id;
-    }
-
     public String getEmail() {
         return email;
     }

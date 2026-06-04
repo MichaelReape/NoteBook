@@ -4,11 +4,10 @@ import { useState } from "react";
 type NotesListProps = {
   onOpen: (note: NoteDTO) => void;
   notes: NoteDTO[];
+  selectedNote: NoteDTO | null;
 };
 
-const NotesList = ({ onOpen, notes }: NotesListProps) => {
-  const [selectedNote, setSelectedNote] = useState<NoteDTO | null>(null);
-
+const NotesList = ({ onOpen, notes, selectedNote }: NotesListProps) => {
   // need to display a list of notes from the notes prop, when one is seleceted then onOpen passes it back to app.tsx to be loaded into the editor
 
   return (
@@ -16,7 +15,7 @@ const NotesList = ({ onOpen, notes }: NotesListProps) => {
       {notes.map((note) => (
         <div
           key={note.noteId}
-          onClick={() => setSelectedNote(note)}
+          onClick={() => onOpen(note)}
           style={{
             backgroundColor:
               selectedNote?.noteId === note.noteId ? "#ddd" : "transparent",
@@ -26,9 +25,6 @@ const NotesList = ({ onOpen, notes }: NotesListProps) => {
           <h3>{note.note}</h3>
         </div>
       ))}
-      <button onClick={() => selectedNote && onOpen(selectedNote)}>
-        Open Note
-      </button>
     </div>
   );
 };

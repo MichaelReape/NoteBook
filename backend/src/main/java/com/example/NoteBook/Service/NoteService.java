@@ -40,6 +40,31 @@ public class NoteService {
   }
 
   /**
+   * Update a current note
+   * 
+   * @param noteDTO DTO containing the updated note information, including the
+   *                noteId to identify which note to update
+   * @return noteDTO
+   * @throws RuntimeException if the note does not belong to the current context
+   *                          holder or if the note is not found
+   */
+  public NoteResponseDTO updateNote(NoteResponseDTO noteDTO) {
+    System.out.println("updating note in Service");
+    // find the note by the noteId
+    Note note = findNoteByNoteId(noteDTO.getNoteId());
+    // confirm the note belongs to the user
+    if (checkOwnership(note) && note != null) {
+      note.setBook(noteDTO.getBook());
+      note.setChapter(noteDTO.getChapter());
+      note.setNotes(noteDTO.getNote());
+      System.out.println("Updated note in Service");
+      return convertToNoteResponseDTO(noteRepository.save(note));
+    } else {
+      throw new RuntimeException("Note not updated");
+    }
+  }
+
+  /**
    * Finds all notes user has
    * 
    * @return List of notes the user has, each note in a DTO

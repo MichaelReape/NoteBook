@@ -3,14 +3,14 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import { FloatingMenu, BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import type { NoteDTO } from "../types/note.ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Tiptap = ({
-  // userId,
   loadedNote,
+  onNoteSaved,
 }: {
-  // userId: String;
   loadedNote: NoteDTO | null;
+  onNoteSaved: () => void;
 }) => {
   const editor = useEditor({
     extensions: [StarterKit], // define your extension array
@@ -19,30 +19,58 @@ const Tiptap = ({
 
   const [note, setNote] = useState<NoteDTO | null>(null);
   const saveNote = async () => {
-    try {
-      console.log("Saving notes");
-      const content = editor.getHTML();
-      const response = await fetch(`http://localhost:8080/api/notes`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          note: content,
-        }),
-      });
-      const data = await response.json();
-      setNote(data);
-      console.log("Saved ", data.noteId, " at ", data.createdAt);
-    } catch (error) {
-      console.log(error);
+    if (!loadedNote) {
+      try {
+        console.log("Saving notes");
+        const content = editor.getHTML();
+        const response = await fetch(`http://localhost:8080/api/notes`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            note: content,
+          }),
+        });
+        // idk if this is necessary or not
+        // REVIEW LATER
+        const data = await response.json();
+        setNote(data);
+        console.log("Saved ", data.noteId, " at ", data.createdAt);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        console.log("updating note at the start of the saveNote function");
+        const content = editor.getHTML();
+        const response = await fetch(`http://localhost:8080/api/notes`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            noteId: loadedNote.noteId,
+            book: loadedNote.book,
+            chapter: loadedNote.chapter,
+            note: content,
+            createdAt: loadedNote.createdAt,
+          }),
+        });
+        const data = await response.json();
+        setNote(data);
+        console.log("Updated ", data.noteId);
+        console.log(data.note);
+      } catch (error) {
+        console.log(error);
+      }
     }
+    onNoteSaved();
   };
-  const loadNote = () => {
-    if (loadedNote?.note) {
+
+  useEffect(() => {
+    if (loadedNote?.note && editor) {
       editor.commands.setContent(loadedNote.note);
     }
-    console.log("note loaded");
-  };
+  }, [loadedNote, editor]);
   return (
     <>
       <EditorContent editor={editor} />
@@ -50,7 +78,7 @@ const Tiptap = ({
       {/* add bubble menu for formatting options like bold, italic */}
       <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
       <button onClick={saveNote}>Save Note</button>
-      <button onClick={loadNote}> Load Note</button>
+      {/* <button onClick={loadNote}> Load Note</button> */}
     </>
   );
 };

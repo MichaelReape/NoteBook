@@ -86,8 +86,7 @@ function App() {
           <RegisterForm
             //need to log user in after registration and display the logout button
             //need to do onLoginsuccess i think
-            onRegisterSuccess={(id, email) => {
-              // setUserId(id);
+            onRegisterSuccess={(email) => {
               setEmail(email);
               setIsCreateAccountOpen(false);
             }}
@@ -98,7 +97,6 @@ function App() {
         <Modal onClose={() => setIsLoginOpen(false)}>
           <LoginForm
             onLoginSuccess={(email) => {
-              // setUserId(id);
               getAllNotes();
               setEmail(email);
               setIsLoginOpen(false);
@@ -111,14 +109,13 @@ function App() {
 
       <NotesList
         notes={notes}
-        onOpen={(note) => {
-          setSelectedNote(note);
-        }}
+        selectedNote={selectedNote}
+        onOpen={(note) => setSelectedNote(note)}
       />
       {/* {userId && <button onClick={getAllNotes(userId)}>Notes</button>} */}
       <div className="card">
         {/* here need to add logic that if the note is set to something and load note pressed then set content to it */}
-        <Tiptap loadedNote={selectedNote} />
+        <Tiptap loadedNote={selectedNote} onNoteSaved={getAllNotes} />
       </div>
     </div>
   );

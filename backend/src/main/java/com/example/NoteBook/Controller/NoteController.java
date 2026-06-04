@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +42,22 @@ public class NoteController {
   @PostMapping
   public NoteResponseDTO createNote(@Valid @RequestBody CreateNoteDTO createNoteDTO) {
     return noteService.saveNote(createNoteDTO);
+  }
+
+  // update note
+  @PutMapping
+  /**
+   * Update a current note
+   * 
+   * @param noteDTO DTO containing the updated note information, including the
+   *                noteId to identify which note to update
+   * @return noteDTO
+   * @throws RuntimeException if the note does not belong to the current context
+   *                          holder or if the note is not found
+   */
+  public NoteResponseDTO updateNote(@RequestBody NoteResponseDTO noteDTO) {
+    System.out.println("updating note in Controller");
+    return noteService.updateNote(noteDTO);
   }
 
   /**

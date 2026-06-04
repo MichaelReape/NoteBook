@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 type LoginFormProps = {
-  onLoginSuccess: (id: string, email: string) => void;
+  onLoginSuccess: (email: string) => void;
 };
 
 const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
@@ -28,7 +28,7 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
         throw new Error("Login failed");
       }
       const data = await response.json();
-      onLoginSuccess(data.id, data.email);
+      onLoginSuccess(data.email);
       console.log("User logged in", data);
       return;
     } catch (err) {

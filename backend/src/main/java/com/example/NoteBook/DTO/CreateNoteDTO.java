@@ -1,7 +1,6 @@
 package com.example.NoteBook.DTO;
 
 public class CreateNoteDTO {
-  private Long userId;
   private String book;
   private String chapter;
   private String note;

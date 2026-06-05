@@ -60,6 +60,7 @@ public class AppUserController {
   }
 
   // logout user
+  // closes the session and removes the session cookie
   @PostMapping("/logout")
   public ResponseEntity<Void> logoutUser(HttpServletResponse response, HttpServletRequest request) {
     authService.closeSession(request, response);

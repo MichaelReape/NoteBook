@@ -11,4 +11,5 @@ import com.example.NoteBook.Entity.Note;
 public interface NoteRepository extends JpaRepository<Note, Long> {
 
   public List<Note> findByUserId(Long userId);
+
 }

@@ -14,6 +14,7 @@ function App() {
   const [isCreateAccountOpen, setIsCreateAccountOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [selectedNote, setSelectedNote] = useState<NoteDTO | null>(null);
+  const [isNotesListOpen, setIsNotesListOpen] = useState(false);
 
   // function that toggles the create account modal, which shows the email, password and name field.
   // closes the login modal if it is open
@@ -26,6 +27,10 @@ function App() {
   const toggleLoginModal = () => {
     setIsLoginOpen(!isLoginOpen);
     setIsCreateAccountOpen(false);
+  };
+
+  const toggleNotesListModal = () => {
+    setIsNotesListOpen(!isNotesListOpen);
   };
   // logs the user out with post request to user controller which closes the session
   // clears the userId, email and notes state to reset the app to the logged out state
@@ -106,12 +111,17 @@ function App() {
       )}
       {email && <p>Welcome, {email}!</p>}
       {email && <button onClick={logout}>Logout</button>}
+      {email && <button onClick={toggleNotesListModal}>Notes</button>}
+      {isNotesListOpen && (
+        <Modal onClose={() => setIsNotesListOpen(false)}>
+          <NotesList
+            notes={notes}
+            selectedNote={selectedNote}
+            onOpen={(note) => setSelectedNote(note)}
+          />
+        </Modal>
+      )}
 
-      <NotesList
-        notes={notes}
-        selectedNote={selectedNote}
-        onOpen={(note) => setSelectedNote(note)}
-      />
       {/* {userId && <button onClick={getAllNotes(userId)}>Notes</button>} */}
       <div className="card">
         {/* here need to add logic that if the note is set to something and load note pressed then set content to it */}
